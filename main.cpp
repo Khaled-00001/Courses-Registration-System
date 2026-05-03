@@ -1,6 +1,8 @@
 #include <iostream>
 #include <unordered_map>
 #include<fstream>
+#include <vector>
+#include<sstream>
 
 
 #include "Course.h"
@@ -57,22 +59,36 @@ pair<Course,bool> searchCourseByCode(string courseCode) {
 void readingCourseFile(File &f) {
     f.readFile.open("course.txt");
 
-    string code,name,description,instructor_name,request;
-    int creditHours;
+    string line;
 
-    while (f.readFile>> code>> name >>description>>instructor_name >> creditHours>>request) {
+    while (getline(f.readFile, line)) {
+        stringstream ss(line);
+
+        string code, name, description, instructor_name;
+        int creditHours;
+
+        ss >> code >> name >> description >> instructor_name >> creditHours;
+
+        vector<string> prereq;
+        string req;
+
+
+        while (ss >> req) {
+            prereq.push_back(req);
+        }
+
         Course c;
-        map<string,bool>p1;
-        p1[request]=false;
         c.setName(name);
         c.setCourse_code(code);
         c.setCredit_hours(creditHours);
         c.setDescription(description);
         c.setInstructorName(instructor_name);
-        c.setPrerequest(p1);
-        courses[name]=c;
+        c.setPrerequest(prereq);
 
+        courses[name] = c;
     }
+
+    f.readFile.close();
 }
 
 void printCourses() {
@@ -87,8 +103,8 @@ void printCourses() {
         cout << "Instructor: " << c.getInstructorName() << endl;
 
         cout << "Prerequisite(s): ";
-        for (auto & pre : c.getPrerequest()) {
-            cout << pre.first << " ";
+        for (int i=0 ; i<c.getPrerequest().size(); i++) {
+            cout << c.getPrerequest().at(i) << " ";
         }
         cout << endl;
 

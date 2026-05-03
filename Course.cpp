@@ -10,7 +10,7 @@ Course::Course() {
     this->setCredit_hours(0);
     this->setDescription(" ");
     this->setInstructorName("");
-    this->setPrerequest(map<string, bool>());
+    this->setPrerequest(vector<string>());
     this->setCourse_code("");
     this->setName("");
 
@@ -36,7 +36,7 @@ string Course::getDescription() {
     return this->description;
 }
 
-map<string, bool> Course::getPrerequest() {
+vector<string> Course::getPrerequest() {
     return this->prerequest;
 }
 
@@ -52,7 +52,7 @@ void Course::setDescription(string description) {
     this->description = description;
 }
 
-void Course::setPrerequest(map<string, bool> prerequest) {
+void Course::setPrerequest(vector<string> prerequest) {
     this->prerequest = prerequest;
 }
 

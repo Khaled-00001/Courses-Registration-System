@@ -1,6 +1,7 @@
 #include <map>
 #include <string>
 #include<fstream>
+#include <vector>
 using namespace std;
 
 class Course {
@@ -22,8 +23,8 @@ public:
     int getCredit_hours() ;
     void setCredit_hours(int credit_hours);
 
-    map<string, bool> getPrerequest();
-    void setPrerequest( map<string, bool> prerequest);
+    vector<string> getPrerequest();
+    void setPrerequest( vector<string> prerequest);
 
     string getInstructorName();
     void setInstructorName( string instructor_name);
@@ -35,7 +36,7 @@ private:
     string description;
     int creditHours;
     string instructor_name;
-    map<string,bool> prerequest;
+    vector<string> prerequest;
 
 
 };
