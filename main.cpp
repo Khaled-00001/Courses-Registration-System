@@ -3,13 +3,10 @@
 #include<fstream>
 #include <vector>
 #include<sstream>
-
+#include <cctype>
 
 #include "Course.h"
 using namespace std;
-
-
-
 
 struct File {
     ifstream readFile;
@@ -18,9 +15,10 @@ struct File {
 
 //fns
 Course searchCourseByName(string courseName);
-pair<Course,bool> searchCourseByCode(string courseCode);
+Course searchCourseByCode(string courseCode);
 void readingCourseFile(File &f);
 void printCourses(); //made chat do it cuz i am bored to do it
+string toUpperCase(string str);
 
 //init ds var
 unordered_map<string, Course> courses;
@@ -29,31 +27,32 @@ unordered_map<string, Course> courses;
 int main() {
     File courseFile;
 
-    readingCourseFile(courseFile);
+    /*readingCourseFile(courseFile);
     printCourses();
+    cout<<"Hereeeeeeeee\n";
+    cout<<searchCourseByCode("cs304").getName()<<endl;
+    cout<<searchCourseByName("artificial_intelligence").getCourse_code()<<endl;*/
 
     return 0;
 }
 
-Course searchCourse(string courseName) {
+Course searchCourseByName(string courseName) {
+    courseName = toUpperCase(courseName);
     return courses[courseName];
 }
 
-pair<Course,bool> searchCourseByCode(string courseCode) {
-    pair<Course,bool> result;
+Course searchCourseByCode(string courseCode) {
+    courseCode = toUpperCase(courseCode);
+
     for (auto& c : courses) {
         if (c.second.getCourse_code() == courseCode) {
-            result.second=true;
-            result.first=courses[c.second.getName()];
-            return result;
+          return courses[c.second.getName()];
+
         }
-
     }
-    Course cempty;
-    result.second=false;
-    result.first=cempty;
+    Course cempty = Course();
 
-    return result;
+    return cempty;
 }
 
 void readingCourseFile(File &f) {
@@ -110,4 +109,13 @@ void printCourses() {
 
         cout << "------------------------" << endl;
     }
+}
+
+string toUpperCase(string str) {
+    string s;
+    for (auto& c : str) {
+        c = toupper(c);
+        s+=c;
+    }
+    return s;
 }
