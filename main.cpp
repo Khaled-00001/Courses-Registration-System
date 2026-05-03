@@ -19,6 +19,7 @@ Course searchCourseByCode(string courseCode);
 void readingCourseFile(File &f);
 void printCourses(); //made chat do it cuz i am bored to do it
 string toUpperCase(string str);
+string handleSpaceToUnderScore(string str);
 
 //init ds var
 unordered_map<string, Course> courses;
@@ -27,22 +28,22 @@ unordered_map<string, Course> courses;
 int main() {
     File courseFile;
 
-    /*readingCourseFile(courseFile);
+    readingCourseFile(courseFile);
     printCourses();
     cout<<"Hereeeeeeeee\n";
-    cout<<searchCourseByCode("cs304").getName()<<endl;
-    cout<<searchCourseByName("artificial_intelligence").getCourse_code()<<endl;*/
+    cout<<searchCourseByCode("cS304").getName()<<endl;
+    cout<<searchCourseByName("artificial intelligence").getCourse_code()<<endl;
 
     return 0;
 }
 
 Course searchCourseByName(string courseName) {
-    courseName = toUpperCase(courseName);
+    courseName = handleSpaceToUnderScore(toUpperCase(courseName));
     return courses[courseName];
 }
 
 Course searchCourseByCode(string courseCode) {
-    courseCode = toUpperCase(courseCode);
+    courseCode = handleSpaceToUnderScore(toUpperCase(courseCode));
 
     for (auto& c : courses) {
         if (c.second.getCourse_code() == courseCode) {
@@ -118,4 +119,14 @@ string toUpperCase(string str) {
         s+=c;
     }
     return s;
+}
+
+string handleSpaceToUnderScore(string str) {
+
+    for (int i=0;i<str.size();i++) {
+        if (str[i] == ' ') {
+            str[i] = '_';
+        }
+    }
+return str;
 }
