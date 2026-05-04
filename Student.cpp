@@ -6,7 +6,6 @@
 #include "Student.h"
 
 using namespace std;
-
 vector<pair<Course, double>> courseGradesPair;
 Course myCourses;
 
@@ -119,9 +118,9 @@ void Student::courseRegisteration() {
                 found = true;
                 stringstream ss(line);
                 string cName, cDescription, cCode;
-                getline(ss, cCode, ',');
-                getline(ss, cName, ',');
-                getline(ss, cDescription, ',');
+                getline(ss, cCode, ' ');
+                getline(ss, cName, ' ');
+                getline(ss, cDescription, ' ');
                 c.setName(cName),
                 c.setCourse_code(cCode);
                 c.setDescription(cDescription);
