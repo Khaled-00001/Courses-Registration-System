@@ -1,12 +1,12 @@
 #include<iostream>
 #include<vector>
+#include <sstream>
 #include<fstream>
 #include<assert.h>
 #include "Student.h"
 
 using namespace std;
 
-vector <Course> registeredCourses;
 vector<pair<Course, double>> courseGradesPair;
 Course myCourses;
 
@@ -77,17 +77,17 @@ void Student::getGrade(Course course) {
 
 
 void Student::viewGrades() {
-    for (int i = 0; i < courseGradesPair.size(); i++) {
-        cout << "Course: " << courseGradesPair[i].first.getName() << endl;
-        cout << "Grade: " << courseGradesPair[i].second << endl;
+    for (auto& c: courseGradesPair) {
+        cout << "Course: " << c.first.getName() << endl;
+        cout << "Grade: " << c.second << endl;
     }
 }
 
 double Student::calculateGPA() {
     double totalCreditHours, totalGrades;
-    for (int i = 0; i < courseGradesPair.size(); i++) {
-        totalCreditHours += courseGradesPair[i].first.getCredit_hours();
-        totalGrades += courseGradesPair[i].second;
+    for (auto& c: courseGradesPair) {
+        totalCreditHours += c.first.getCredit_hours();
+        totalGrades += c.second;
     }
     double gpa = totalGrades/totalCreditHours;
     return gpa;
@@ -104,7 +104,44 @@ void Student::generateReport() {
     cout << "----------------------------------\n";
 }
 
-void Student::courseRegisteration() {}
+void Student::courseRegisteration() {
+    cout << "Welcome to Course Registeration: \n";
+    cout << "Enter Name of Course you want to register Correctly:\n";
+    Course c;
+    string courseName; getline(cin >> ws, courseName);
+    ifstream file("course.txt");
+    string line;
+    bool found = false;
+    int lineNumber = 1;
+    if (file.is_open()) {
+        while (getline(file,line)) {
+            if (line.find(courseName) != string::npos) {
+                found = true;
+                stringstream ss(line);
+                string cName, cDescription, cCode;
+                getline(ss, cCode, ',');
+                getline(ss, cName, ',');
+                getline(ss, cDescription, ',');
+                c.setName(cName),
+                c.setCourse_code(cCode);
+                c.setDescription(cDescription);
+                break;
+            }
+            lineNumber++;
+        }
+        file.close();
+    }
+    if (checkPrerequisites(courseName) && found) {
+        cout << "Registered! :)\n";
+        registeredCourses.push_back(c);
 
+    }else {
+        cout << "Cannot register the course :(\n";
+    }
 
+}
+
+bool Student::checkPrerequisites(string courseName) {
+
+}
 

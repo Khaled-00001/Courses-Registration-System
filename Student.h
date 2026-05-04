@@ -32,7 +32,7 @@ public:
     void addGrade(Course, double);
     void editGrade(Course, double);
     void getGrade(Course);
-    bool checkPrerequisites(Course);
+    bool checkPrerequisites(string);
     double calculateGPA();
     void generateReport();
 private:
