@@ -26,15 +26,8 @@ public:
     int getLevel();
     void setLevel(int level);
 
-    // core functionalities
-    void courseRegisteration();
-    void viewGrades();
-    void addGrade(Course, double);
-    void editGrade(Course, double);
-    void getGrade(Course);
-    bool checkPrerequisites(string);
-    double calculateGPA();
-    void generateReport();
+
+
 private:
     // identifying class attributes
     string name;
