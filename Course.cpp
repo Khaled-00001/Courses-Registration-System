@@ -63,10 +63,3 @@ string Course::getInstructorName() {
 void Course::setInstructorName(string instructor_name) {
     this->instructor_name = instructor_name;
 }
-
-
-
-
-
-
-
