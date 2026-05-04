@@ -1,8 +1,6 @@
-cmake_minimum_required(VERSION 4.0)
-project(course_regestiration)
+cmake_minimum_required(VERSION 3.20)
+project(MyProject)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 
-add_executable(course_regestiration main.cpp
-        Course.cpp
-        Course.h)
+add_executable(course_registration main.cpp Course.cpp)
