@@ -1,5 +1,4 @@
 
-
 #include "System.h"
 #include "Student.h"
 #include <iostream>
@@ -14,6 +13,7 @@
 System::System() {
     readingCourseFile();
     readingStudentFile();
+    readingRegisterFile();
 }
 
 // ------------------------ Course Searching ------------------------ //
@@ -72,7 +72,7 @@ void System:: readingCourseFile() {
     courseFile.readFile.close();
 }
 
-void System::readRegisterFile() {
+void System::readingRegisterFile() {
     registerFile.readFile.open("register.txt");
     string line;
     while (getline(registerFile.readFile, line)) {
@@ -387,14 +387,14 @@ void System::courseRegisteration() {
     cout << "Enter course you want to register: ";
     cin >> courseName;
     courseName = handleSpaceToUnderScore(toUpperCase(courseName));
-    bool found;
+    bool found = false;
     for (auto& c: courses) {
         if (c.second.getName() == courseName) {
             found = true;
             break;
         }
     }
-    if (found) {
+    if (found && checkPrerequesites(studentID ,courseName)) {
         registeredCourses[studentID].push_back(courses[courseName]);
         cout << "Congrats :)\nCourse have been Registered Successfully!\n";
     }
@@ -402,9 +402,28 @@ void System::courseRegisteration() {
 
 }
 
-// not maken yet :|
-bool System::checkPrerequesites(string courseName) {
-    viewPrerequesites(courseName);
-
+bool System::checkPrerequesites(int studentID,string courseName) {
+    courseName = handleSpaceToUnderScore(toUpperCase(courseName));
+    bool found = 0;
+    vector<string>& prereq = courses[courseName].getPrerequest();
+    vector<Course>& passed = passedCourses[studentID];
+    if (prereq.empty()) {
+        cout << "You can register this course\n";
+        return true;
+    }
+    for (auto& req: prereq) {
+        found = false;
+        for (auto& p: passed) {
+            if (req == p.getName()) {
+                found = true;
+                break;
+            }
+        }
+    }
+    if (!found) {
+        cout << "You can't register this course\n";
+        return false;
+    }
+    cout << "You can regiseter this course\n";
+    return true;
 }
-
