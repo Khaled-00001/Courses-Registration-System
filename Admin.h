@@ -1,29 +1,32 @@
 #pragma once
+#ifndef ADMIN_H
+#define ADMIN_H
 
-#include <unordered_map>
-#include <vector>
 #include <string>
-#include "Course.h"
 using namespace std;
 
-class Admin
-{
-private : 
-	unordered_map<string, Course> courses;
-	unordered_map<string, vector<string>> prerequisites;
+class Admin {
 
-public :
-	void addCourse();
-	void editCourse(string code);
-	void showCourses();
+private:
+    string username;
+    string password;
 
-	void addPrerequisite(string courseCode, string prereq);
-	void viewPrerequisites(string courseCode);
+public:
+   
+    Admin();
+    Admin(string user, string pass);
 
+   
+    void setUsername(string user);
+    string getUsername();
 
+    void setPassword(string pass);
+    string getPassword();
 
-	
+    // login
+    bool login(string user, string pass);
 
-
+    
 };
 
+#endif
