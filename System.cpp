@@ -1,4 +1,3 @@
-
 #include "System.h"
 #include "Student.h"
 #include <iostream>
@@ -8,12 +7,9 @@
 #include <cctype>
 #include "Course.h"
 
-
-
 System::System() {
     readingCourseFile();
     readingStudentFile();
-    readingRegisterFile();
 }
 
 // ------------------------ Course Searching ------------------------ //
@@ -72,7 +68,7 @@ void System:: readingCourseFile() {
     courseFile.readFile.close();
 }
 
-void System::readingRegisterFile() {
+void System::readRegisterFile() {
     registerFile.readFile.open("register.txt");
     string line;
     while (getline(registerFile.readFile, line)) {
@@ -184,9 +180,6 @@ void System::setCoursesWeHave(vector<Course> course) {
 
     }
 }
-
-// ----------------------- Grades Section ----------------------- //
-
 
 // adding grades to regestired course and making vector of pairs<Course, Grade>
 void System::addGrade(int studentID, string courseName, double grade) {
@@ -387,14 +380,14 @@ void System::courseRegisteration() {
     cout << "Enter course you want to register: ";
     cin >> courseName;
     courseName = handleSpaceToUnderScore(toUpperCase(courseName));
-    bool found = false;
+    bool found;
     for (auto& c: courses) {
         if (c.second.getName() == courseName) {
             found = true;
             break;
         }
     }
-    if (found && checkPrerequesites(studentID ,courseName)) {
+    if (found) {
         registeredCourses[studentID].push_back(courses[courseName]);
         cout << "Congrats :)\nCourse have been Registered Successfully!\n";
     }
@@ -402,28 +395,186 @@ void System::courseRegisteration() {
 
 }
 
-bool System::checkPrerequesites(int studentID,string courseName) {
-    courseName = handleSpaceToUnderScore(toUpperCase(courseName));
-    bool found = 0;
-    vector<string>& prereq = courses[courseName].getPrerequest();
-    vector<Course>& passed = passedCourses[studentID];
-    if (prereq.empty()) {
-        cout << "You can register this course\n";
-        return true;
+// not maken yet :|
+bool System::checkPrerequesites(string courseName) {
+    viewPrerequesites(courseName);
+
+
+
+
+}
+
+void System::addCourse() {
+
+    Course c;
+    string name, code, desc, instructor;
+    int ch;
+
+    cout << "Enter course name: ";
+    cin.ignore();
+    getline(cin, name);
+
+    cout << "Enter course code: ";
+    cin >> code;
+
+    if (courses.find(code) != courses.end()) {
+        cout << "Course already exists!\n";
+        return;
     }
-    for (auto& req: prereq) {
-        found = false;
-        for (auto& p: passed) {
-            if (req == p.getName()) {
-                found = true;
-                break;
-            }
+
+    cout << "Enter description: ";
+    cin >> desc;
+
+    cout << "Enter credit hours: ";
+    cin >> ch;
+
+    cout << "Enter instructor: ";
+    cin >> instructor;
+
+    c.setName(name);
+    c.setCourse_code(code);
+    c.setDescription(desc);
+    c.setCredit_hours(ch);
+    c.setInstructorName(instructor);
+
+    courses[code] = c;
+
+    // save to file
+    courseFile.editFile.open("course.txt", ios::app);
+    courseFile.editFile << code << " " << name << " "
+        << desc << " " << instructor << " " << ch << endl;
+    courseFile.editFile.close();
+
+    cout << "Course added successfully!\n";
+}
+void System::editCourse(string code) {
+
+    if (courses.find(code) == courses.end()) {
+        cout << "Course not found!\n";
+        return;
+    }
+
+    int choice;
+
+    while (true) {
+
+        cout << "\nEditing: " << courses[code].getName() << endl;
+
+        cout << "1. Name\n2. Description\n3. Credit Hours\n4. Instructor\n5. Exit\n";
+        cin >> choice;
+
+        if (choice == 1) {
+            string name;
+            cin.ignore();
+            getline(cin, name);
+            courses[code].setName(name);
+        }
+        else if (choice == 2) {
+            string desc;
+            cin.ignore();
+            getline(cin, desc);
+            courses[code].setDescription(desc);
+        }
+        else if (choice == 3) {
+            int ch;
+            cin >> ch;
+            courses[code].setCredit_hours(ch);
+        }
+        else if (choice == 4) {
+            string inst;
+            cin.ignore();
+            getline(cin, inst);
+            courses[code].setInstructorName(inst);
+        }
+        else if (choice == 5) break;
+    }
+
+    cout << "Course updated successfully!\n";
+}
+
+void System::addPrerequisite(string code, string prereq) {
+
+    if (courses.find(code) == courses.end()) {
+        cout << "Course not found!\n";
+        return;
+    }
+
+    prerequisites[code].push_back(prereq);
+}
+void System::viewPrerequisites(string code) {
+
+    if (courses.find(code) == courses.end()) {
+        cout << "Course not found!\n";
+        return;
+    }
+
+    cout << "Prerequisites: ";
+
+    if (prerequisites[code].empty()) {
+        cout << "None";
+    }
+    else {
+        for (auto& p : prerequisites[code]) {
+            cout << p << " ";
         }
     }
-    if (!found) {
-        cout << "You can't register this course\n";
-        return false;
+
+    cout << endl;
+}
+
+void System::addStudent() {
+
+    string name;
+    int id, level;
+
+    cout << "Enter student name: ";
+    cin.ignore();
+    getline(cin, name);
+
+    cout << "Enter student ID: ";
+    cin >> id;
+
+    if (students.find(id) != students.end()) {
+        cout << "Student already exists!\n";
+        return;
     }
-    cout << "You can regiseter this course\n";
-    return true;
+
+    cout << "Enter student level: ";
+    cin >> level;
+
+    Student s(name, id, level);
+
+    students[id] = s;
+
+    studentFile.editFile.open("students.txt", ios::app);
+    studentFile.editFile << id << " " << name << " " << level << endl;
+    studentFile.editFile.close();
+
+    cout << "Student added successfully!\n";
+}
+void System::deleteStudent(int id) {
+
+    if (students.find(id) == students.end()) {
+        cout << "Student not found!\n";
+        return;
+    }
+
+    students.erase(id);
+
+
+    grades.erase(id);
+    registeredCourses.erase(id);
+
+    cout << "Student deleted successfully!\n";
+}
+
+void System::registerStudentInCourse(int id, string code) {
+
+    if (!studentExists(id) || !courseExists(code)) {
+        cout << "Invalid data!\n";
+        return;
+    }
+
+    registeredCourses[id].push_back(code);
+    cout << "Registered!\n";
 }

@@ -24,6 +24,7 @@ private:
     unordered_map<int, vector<Course>> registeredCourses;
     unordered_map<int, vector<Course>> passedCourses;
 
+    unordered_map<string, vector<string>> prerequisites; // courseCode -> prereqCodes
 
 public:
     System();
@@ -47,7 +48,20 @@ public:
     void printAllStudents();
     void showSpecificCourse();
     void readingRegisterFile();
+
+
+    void addCourse();
+    void editCourse(string code);
+
+    //void deleteCourse(string code);
+    void addStudent();
+    void deleteStudent(int id);
+    void registerStudentInCourse(int studentID, string courseCode);
+    void addPrerequisite(string courseCode, string prereq);
+    void viewPrerequisites(string courseCode);
+
 };
+
 
 
 #endif
