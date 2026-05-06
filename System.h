@@ -22,6 +22,8 @@ private:
     unordered_map<int, Student> students;
     unordered_map<int, vector<pair<Course, double>>> grades;
     unordered_map<int, vector<Course>> registeredCourses;
+    unordered_map<int, vector<Course>> passedCourses;
+
     unordered_map<string, vector<string>> prerequisites; // courseCode -> prereqCodes
 
 public:
@@ -29,11 +31,10 @@ public:
     Course searchCourseByName(string courseName);
     Course searchCourseByCode(string courseCode);
     void courseRegisteration();
-    void viewGrades(int
-        );
+    void viewGrades(int);
     void addGrade(int ,string, double);
     void editGrade(int ,string, double);
-    bool checkPrerequesites(string);
+    bool checkPrerequesites(int ,string);
     double calculateGPA(int);
     void generateReport(int);
     void getGrade(int ,string);
@@ -46,22 +47,21 @@ public:
     void setCourses(vector<Course> courses);
     void printAllStudents();
     void showSpecificCourse();
-    void readRegisterFile();
+    void readingRegisterFile();
 
 
     void addCourse();
     void editCourse(string code);
-    //void deleteCourse(string code);
 
+    //void deleteCourse(string code);
     void addStudent();
     void deleteStudent(int id);
-
     void registerStudentInCourse(int studentID, string courseCode);
-
     void addPrerequisite(string courseCode, string prereq);
     void viewPrerequisites(string courseCode);
 
 };
+
 
 
 #endif

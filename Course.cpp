@@ -1,6 +1,3 @@
-//
-// Created by mostafa-medhat-jr on 5/3/26.
-//
 
 #include "Course.h"
 #include<fstream>

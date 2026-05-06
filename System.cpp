@@ -1,5 +1,3 @@
-
-
 #include "System.h"
 #include "Student.h"
 #include <iostream>
@@ -8,8 +6,6 @@
 #include <sstream>
 #include <cctype>
 #include "Course.h"
-
-
 
 System::System() {
     readingCourseFile();
@@ -184,9 +180,6 @@ void System::setCoursesWeHave(vector<Course> course) {
 
     }
 }
-
-// ----------------------- Grades Section ----------------------- //
-
 
 // adding grades to regestired course and making vector of pairs<Course, Grade>
 void System::addGrade(int studentID, string courseName, double grade) {
@@ -411,11 +404,6 @@ bool System::checkPrerequesites(string courseName) {
 
 }
 
-
-
-
-// (÷Ì«¡ ÂÌ„— „‰ Â‰« («” — Ì«—» 
-
 void System::addCourse() {
 
     Course c;
@@ -573,7 +561,7 @@ void System::deleteStudent(int id) {
 
     students.erase(id);
 
-    
+
     grades.erase(id);
     registeredCourses.erase(id);
 

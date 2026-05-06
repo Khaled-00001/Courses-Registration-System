@@ -1,8 +1,4 @@
-#include<iostream>
-#include<vector>
-#include <sstream>
 #include<fstream>
-#include<assert.h>
 #include "Student.h"
 
 using namespace std;

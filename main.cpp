@@ -1,6 +1,5 @@
 #include <iostream>
 #include<fstream>
-#include <cctype>
 #include "Course.h"
 #include "System.h"
 using namespace std;

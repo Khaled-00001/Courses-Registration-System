@@ -34,8 +34,7 @@ private:
     int id;
     int level;
     float gpa;
-    vector <Course> registeredCourses;
-    vector <Course> passedCourses;
+
 };
 
 
