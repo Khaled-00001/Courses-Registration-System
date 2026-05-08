@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include<fstream>
 #include <vector>
+#include "Admin.h"
 
 class Student;
 class Course;
@@ -23,7 +24,7 @@ private:
     unordered_map<int, vector<pair<Course, double>>> grades;
     unordered_map<int, vector<Course>> registeredCourses;
     unordered_map<int, vector<Course>> passedCourses;
-
+    Admin admin;
     unordered_map<string, vector<string>> prerequisites; // courseCode -> prereqCodes
 
 public:
@@ -34,7 +35,7 @@ public:
     void viewGrades(int);
     void addGrade(int ,string, double);
     void editGrade(int ,string, double);
-    bool checkPrerequesites(int ,string);
+    void checkPrerequesites(string);
     double calculateGPA(int);
     void generateReport(int);
     void getGrade(int ,string);
@@ -48,8 +49,8 @@ public:
     void printAllStudents();
     void showSpecificCourse();
     void readingRegisterFile();
-
-
+    bool studentExists(int id);
+    bool courseExists(string code);
     void addCourse();
     void editCourse(string code);
 
@@ -59,6 +60,14 @@ public:
     void registerStudentInCourse(int studentID, string courseCode);
     void addPrerequisite(string courseCode, string prereq);
     void viewPrerequisites(string courseCode);
+ // integration
+    void run();
+    bool loginAdmin();
+    void studentMenu(int id) ;
+    void adminMenu() ;
+    void saveStudents();
+    void saveCourses();
+    void saveRegistrations();
 
 };
 

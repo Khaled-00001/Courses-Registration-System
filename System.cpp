@@ -1,30 +1,39 @@
 #include "System.h"
 #include "Student.h"
+#include "Admin.h"
 #include <iostream>
 #include<fstream>
 #include <vector>
 #include <sstream>
 #include <cctype>
-#include "Course.h"
+#include <limits>
 
 System::System() {
     readingCourseFile();
     readingStudentFile();
+    readingRegisterFile();
 }
 
 // ------------------------ Course Searching ------------------------ //
-Course System:: searchCourseByName(string courseName) {
-    courseName = handleSpaceToUnderScore(toUpperCase(courseName));
-    return courses[courseName];
-}
+Course System::searchCourseByName(string courseName) {
 
+    courseName = handleSpaceToUnderScore(toUpperCase(courseName));
+
+    for (auto& c : courses) {
+
+        if (c.second.getName() == courseName) {
+            return c.second;
+        }
+    }
+
+    return Course();
+}
 Course System::searchCourseByCode(string courseCode) {
     courseCode = handleSpaceToUnderScore(toUpperCase(courseCode));
 
     for (auto& c : courses) {
         if (c.second.getCourse_code() == courseCode) {
-          return courses[c.second.getName()];
-
+			return c.second;
         }
     }
     Course cempty = Course();
@@ -62,30 +71,34 @@ void System:: readingCourseFile() {
         c.setInstructorName(instructor_name);
         c.setPrerequest(prereq);
 
-        courses[name] = c;
+        courses[code] = c;
     }
 
     courseFile.readFile.close();
 }
 
-void System::readRegisterFile() {
+void System::readingRegisterFile() {
+
     registerFile.readFile.open("register.txt");
+
     string line;
+
     while (getline(registerFile.readFile, line)) {
+
         stringstream ss(line);
-        string code, name, intructorName;
-        int studentId, creditHours;
-        ss >> studentId >> code >> name >> creditHours >> intructorName;
-        Course c;
-        c.setName(name);
-        c.setCourse_code(code);
-        c.setCredit_hours(creditHours);
-        c.setInstructorName(intructorName);
-        registeredCourses[studentId].push_back(c);
+
+        int studentId;
+        string code;
+
+        ss >> studentId >> code;
+
+        if (courses.find(code) != courses.end()) {
+            registeredCourses[studentId].push_back(courses[code]);
+        }
     }
+
     registerFile.readFile.close();
 }
-
 
 void System:: readingStudentFile() {
     studentFile.readFile.open("student.txt");
@@ -166,7 +179,7 @@ string System::handleSpaceToUnderScore(string str) {
     return str;
 }
 
-vector<Course> System::getcoursesWeHave() {
+vector<Course> System::getCourses() {
     vector<Course> course;
     for (auto &c : courses) {
         course.push_back(c.second);
@@ -174,7 +187,7 @@ vector<Course> System::getcoursesWeHave() {
     return course;
 }
 
-void System::setCoursesWeHave(vector<Course> course) {
+void System::setCourses(vector<Course> course) {
     for (int i=0;i<course.size();i++) {
         courses [course[i].getName()] = course[i];
 
@@ -243,7 +256,7 @@ void System::getGrade(int studentID,string courseName) {
     for (auto& c: grades[studentID]) {
         if (c.first.getName() == courseName) {
             found = true;
-            c.second;
+           courseGrade = c.second;
             courseCode = c.first.getCourse_code();
             cName = c.first.getName();
             break;
@@ -275,6 +288,9 @@ double System::calculateGPA(int studentID) {
         totalCreditHours += c.first.getCredit_hours();
         totalGrades += c.second;
     }
+     if (totalCreditHours == 0)
+        return 0;
+
     double gpa = totalGrades/totalCreditHours;
     return gpa;
 }
@@ -396,12 +412,8 @@ void System::courseRegisteration() {
 }
 
 // not maken yet :|
-bool System::checkPrerequesites(string courseName) {
-    viewPrerequesites(courseName);
-
-
-
-
+void System::checkPrerequesites(string courseName) {
+    viewPrerequisites(courseName);
 }
 
 void System::addCourse() {
@@ -411,7 +423,7 @@ void System::addCourse() {
     int ch;
 
     cout << "Enter course name: ";
-    cin.ignore();
+cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, name);
 
     cout << "Enter course code: ";
@@ -465,13 +477,13 @@ void System::editCourse(string code) {
 
         if (choice == 1) {
             string name;
-            cin.ignore();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getline(cin, name);
             courses[code].setName(name);
         }
         else if (choice == 2) {
             string desc;
-            cin.ignore();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getline(cin, desc);
             courses[code].setDescription(desc);
         }
@@ -482,8 +494,8 @@ void System::editCourse(string code) {
         }
         else if (choice == 4) {
             string inst;
-            cin.ignore();
-            getline(cin, inst);
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	            getline(cin, inst);
             courses[code].setInstructorName(inst);
         }
         else if (choice == 5) break;
@@ -528,7 +540,7 @@ void System::addStudent() {
     int id, level;
 
     cout << "Enter student name: ";
-    cin.ignore();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, name);
 
     cout << "Enter student ID: ";
@@ -546,7 +558,7 @@ void System::addStudent() {
 
     students[id] = s;
 
-    studentFile.editFile.open("students.txt", ios::app);
+    studentFile.editFile.open("student.txt", ios::app);
     studentFile.editFile << id << " " << name << " " << level << endl;
     studentFile.editFile.close();
 
@@ -560,21 +572,292 @@ void System::deleteStudent(int id) {
     }
 
     students.erase(id);
-
-
     grades.erase(id);
     registeredCourses.erase(id);
-
+    saveStudents();
     cout << "Student deleted successfully!\n";
 }
+bool System::studentExists(int id) {
+    return students.find(id) != students.end();
+}
+bool System::courseExists(string code) {
 
+    for (auto& c : courses) {
+        if (c.second.getCourse_code() == code)
+            return true;
+    }
+    return false;
+}
 void System::registerStudentInCourse(int id, string code) {
 
-    if (!studentExists(id) || !courseExists(code)) {
-        cout << "Invalid data!\n";
-        return;
+  bool alreadyRegistered = false;
+
+for (auto& c : registeredCourses[id]) {
+    if (c.getCourse_code() == courses[code].getCourse_code()) {
+        alreadyRegistered = true;
+        break;
+    }
+}
+
+if (alreadyRegistered) {
+    cout << "You already registered this course!\n";
+    return;
+}
+
+    registeredCourses[id].push_back(courses[code]);
+    cout << "Registered!\n";
+}
+//// login \\\\/
+bool System::loginAdmin() {
+
+    string user, pass;
+
+    cout << "Username: ";
+    cin >> user;
+
+    cout << "Password: ";
+    cin >> pass;
+
+    Admin admin;
+
+    return admin.login(user, pass);
+}
+
+void System::studentMenu(int id) {
+
+    while (true) {
+
+        cout << "\n===== Student Menu =====\n";
+        cout << "1. View Courses\n";
+        cout << "2. Search Course\n";
+        cout << "3. Register Course\n";
+        cout << "4. View Grades\n";
+        cout << "5. GPA\n";
+        cout << "6. Logout\n";
+
+        int choice;
+        cin >> choice;
+
+        if (choice == 1) {
+            printCourses();
+        }
+
+        else if (choice == 2) {
+            string name;
+            cout << "Enter course name/code: ";
+            cin >> name;
+            cout << searchCourseByName(name).getName() << endl;
+        }
+
+        else if (choice == 3) {
+            courseRegisteration();
+        }
+
+        else if (choice == 4) {
+            viewGrades(id);
+        }
+
+        else if (choice == 5) {
+            cout << "GPA: " << calculateGPA(id) << endl;
+        }
+
+        else if (choice == 6) {
+          saveStudents();
+saveCourses();
+saveRegistrations();
+
+cout << "System saved safely. Goodbye!\n";
+            break;
+        }
+
+        else {
+            cout << "Invalid choice!\n";
+        }
+    }
+}
+void System::adminMenu() {
+
+    while (true) {
+
+        cout << "\n===== Admin Menu =====\n";
+        cout << "1. Add Course\n";
+        cout << "2. Edit Course\n";
+        cout << "3. View Courses\n";
+        cout << "4. Add Student\n";
+        cout << "5. Delete Student\n";
+        cout << "6. Add Grade\n";
+        cout << "7. View Students\n";
+        cout << "8. Logout\n";
+
+        int choice;
+        cin >> choice;
+
+        if (choice == 1) addCourse();
+
+        else if (choice == 2) {
+            string code;
+            cout << "Enter course code: ";
+            cin >> code;
+            editCourse(code);
+        }
+
+        else if (choice == 3) printCourses();
+
+        else if (choice == 4) addStudent();
+
+        else if (choice == 5) {
+            int id;
+            cout << "Enter ID: ";
+            cin >> id;
+            deleteStudent(id);
+        }
+
+        else if (choice == 6) {
+            int id;
+            string course;
+            double grade;
+
+            cout << "Student ID: ";
+            cin >> id;
+
+            cout << "Course: ";
+            cin >> course;
+
+            cout << "Grade: ";
+            cin >> grade;
+
+            addGrade(id, course, grade);
+        }
+
+        else if (choice == 7) printAllStudents();
+
+        else if (choice == 8) {saveStudents();
+saveCourses();
+saveRegistrations();
+
+cout << "System saved safely. Goodbye!\n";
+break;
+}
+        else cout << "Invalid choice!\n";
+    }
+}
+
+void System::saveStudents() {
+
+    studentFile.editFile.open("student.txt", ios::trunc);
+
+    for (auto& s : students) {
+
+        studentFile.editFile
+        << s.second.getID() << " "
+        << s.second.getName() << " "
+        << s.second.getLevel()
+        << endl;
     }
 
-    registeredCourses[id].push_back(code);
-    cout << "Registered!\n";
+    studentFile.editFile.close();
+}
+void System::saveCourses() {
+
+    courseFile.editFile.open("course.txt", ios::trunc);
+
+    for (auto& c : courses) {
+
+        Course& co = c.second;
+
+        courseFile.editFile
+        << co.getCourse_code() << " "
+        << co.getName() << " "
+        << co.getDescription() << " "
+        << co.getInstructorName() << " "
+        << co.getCredit_hours()
+        << endl;
+    }
+
+    courseFile.editFile.close();
+}
+
+void System::saveRegistrations() {
+
+    registerFile.editFile.open("register.txt", ios::trunc);
+
+    for (auto& r : registeredCourses) {
+
+        int studentID = r.first;
+
+        for (auto& c : r.second) {
+
+            double grade = -1;
+
+            // check if grade exists
+            for (auto& g : grades[studentID]) {
+                if (g.first.getCourse_code() == c.getCourse_code()) {
+                    grade = g.second;
+                    break;
+                }
+            }
+
+            registerFile.editFile
+            << studentID << " "
+            << c.getCourse_code() << " "
+            << grade
+            << endl;
+        }
+    }
+
+    registerFile.editFile.close();
+}
+
+
+
+
+
+void System::run() {
+
+    while (true) {
+
+        cout << "\n====== Course Registration System ======\n";
+        cout << "1. Login as Admin\n";
+        cout << "2. Login as Student\n";
+        cout << "3. Exit\n";
+        cout << "Choose: ";
+
+        int choice;
+        cin >> choice;
+
+       if (choice == 1) {
+
+    if (loginAdmin()) {
+        adminMenu();
+    } else {
+        cout << "Wrong credentials!\n";
+    }
+}
+        else if (choice == 2) {
+
+            int id;
+            cout << "Enter Student ID: ";
+            cin >> id;
+
+            if (studentExists(id)) {
+                studentMenu(id);
+            }
+            else {
+                cout << "Student not found!\n";
+            }
+
+        }
+       else if (choice == 3) {
+
+    saveStudents();
+    saveCourses();
+    saveRegistrations();
+
+    cout << "Data saved successfully!\n";
+    break;
+}
+        else {
+            cout << "Invalid choice!\n";
+        }
+    }
 }
