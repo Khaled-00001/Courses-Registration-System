@@ -34,7 +34,7 @@ public:
     void viewGrades(int);
     void addGrade(int ,string, double);
     void editGrade(int ,string, double);
-    bool checkPrerequesites(int ,string);
+    void checkPrerequesites(string);
     double calculateGPA(int);
     void generateReport(int);
     void getGrade(int ,string);
@@ -48,8 +48,8 @@ public:
     void printAllStudents();
     void showSpecificCourse();
     void readingRegisterFile();
-
-
+    bool studentExists(int id);
+    bool courseExists(string code);
     void addCourse();
     void editCourse(string code);
 

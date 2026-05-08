@@ -15,7 +15,13 @@ System::System() {
 // ------------------------ Course Searching ------------------------ //
 Course System:: searchCourseByName(string courseName) {
     courseName = handleSpaceToUnderScore(toUpperCase(courseName));
-    return courses[courseName];
+   for (auto& c : courses) {
+        if (c.second.getName() == courseName) {
+            return c.second;
+        }
+    }
+
+    return Course();
 }
 
 Course System::searchCourseByCode(string courseCode) {
@@ -68,7 +74,7 @@ void System:: readingCourseFile() {
     courseFile.readFile.close();
 }
 
-void System::readRegisterFile() {
+void System::readingRegisterFile() {
     registerFile.readFile.open("register.txt");
     string line;
     while (getline(registerFile.readFile, line)) {
@@ -166,7 +172,7 @@ string System::handleSpaceToUnderScore(string str) {
     return str;
 }
 
-vector<Course> System::getcoursesWeHave() {
+vector<Course> System::getCourses() {
     vector<Course> course;
     for (auto &c : courses) {
         course.push_back(c.second);
@@ -174,7 +180,7 @@ vector<Course> System::getcoursesWeHave() {
     return course;
 }
 
-void System::setCoursesWeHave(vector<Course> course) {
+void System::setCourses(vector<Course> course) {
     for (int i=0;i<course.size();i++) {
         courses [course[i].getName()] = course[i];
 
@@ -243,7 +249,7 @@ void System::getGrade(int studentID,string courseName) {
     for (auto& c: grades[studentID]) {
         if (c.first.getName() == courseName) {
             found = true;
-            c.second;
+           courseGrade = c.second;
             courseCode = c.first.getCourse_code();
             cName = c.first.getName();
             break;
@@ -396,12 +402,8 @@ void System::courseRegisteration() {
 }
 
 // not maken yet :|
-bool System::checkPrerequesites(string courseName) {
-    viewPrerequesites(courseName);
-
-
-
-
+void System::checkPrerequesites(string courseName) {
+    viewPrerequisites(courseName);
 }
 
 void System::addCourse() {
@@ -560,14 +562,21 @@ void System::deleteStudent(int id) {
     }
 
     students.erase(id);
-
-
     grades.erase(id);
     registeredCourses.erase(id);
-
     cout << "Student deleted successfully!\n";
 }
-
+bool System::studentExists(int id) {
+    return students.find(id) != students.end();
+}
+bool System::courseExists(string code) {
+    for (auto& c : courses) {
+        if (c.second.getCourse_code() == code) {
+            return true;
+        }
+    }
+    return false;
+}
 void System::registerStudentInCourse(int id, string code) {
 
     if (!studentExists(id) || !courseExists(code)) {
@@ -575,6 +584,6 @@ void System::registerStudentInCourse(int id, string code) {
         return;
     }
 
-    registeredCourses[id].push_back(code);
+    registeredCourses[id].push_back(courses[code]);
     cout << "Registered!\n";
 }
