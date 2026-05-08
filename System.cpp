@@ -6,7 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <cctype>
-#include "Course.h"
+#include <limits>
 
 System::System() {
     readingCourseFile();
@@ -15,9 +15,12 @@ System::System() {
 }
 
 // ------------------------ Course Searching ------------------------ //
-Course System:: searchCourseByName(string courseName) {
+Course System::searchCourseByName(string courseName) {
+
     courseName = handleSpaceToUnderScore(toUpperCase(courseName));
-   for (auto& c : courses) {
+
+    for (auto& c : courses) {
+
         if (c.second.getName() == courseName) {
             return c.second;
         }
@@ -25,14 +28,12 @@ Course System:: searchCourseByName(string courseName) {
 
     return Course();
 }
-
 Course System::searchCourseByCode(string courseCode) {
     courseCode = handleSpaceToUnderScore(toUpperCase(courseCode));
 
     for (auto& c : courses) {
         if (c.second.getCourse_code() == courseCode) {
-          return courses[c.second.getName()];
-
+			return c.second;
         }
     }
     Course cempty = Course();
@@ -70,7 +71,7 @@ void System:: readingCourseFile() {
         c.setInstructorName(instructor_name);
         c.setPrerequest(prereq);
 
-        courses[name] = c;
+        courses[code] = c;
     }
 
     courseFile.readFile.close();
@@ -287,6 +288,9 @@ double System::calculateGPA(int studentID) {
         totalCreditHours += c.first.getCredit_hours();
         totalGrades += c.second;
     }
+     if (totalCreditHours == 0)
+        return 0;
+
     double gpa = totalGrades/totalCreditHours;
     return gpa;
 }
@@ -419,7 +423,7 @@ void System::addCourse() {
     int ch;
 
     cout << "Enter course name: ";
-    cin.ignore();
+cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, name);
 
     cout << "Enter course code: ";
@@ -473,13 +477,13 @@ void System::editCourse(string code) {
 
         if (choice == 1) {
             string name;
-            cin.ignore();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getline(cin, name);
             courses[code].setName(name);
         }
         else if (choice == 2) {
             string desc;
-            cin.ignore();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getline(cin, desc);
             courses[code].setDescription(desc);
         }
@@ -490,8 +494,8 @@ void System::editCourse(string code) {
         }
         else if (choice == 4) {
             string inst;
-            cin.ignore();
-            getline(cin, inst);
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	            getline(cin, inst);
             courses[code].setInstructorName(inst);
         }
         else if (choice == 5) break;
@@ -536,7 +540,7 @@ void System::addStudent() {
     int id, level;
 
     cout << "Enter student name: ";
-    cin.ignore();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, name);
 
     cout << "Enter student ID: ";
@@ -554,7 +558,7 @@ void System::addStudent() {
 
     students[id] = s;
 
-    studentFile.editFile.open("students.txt", ios::app);
+    studentFile.editFile.open("student.txt", ios::app);
     studentFile.editFile << id << " " << name << " " << level << endl;
     studentFile.editFile.close();
 
@@ -577,19 +581,28 @@ bool System::studentExists(int id) {
     return students.find(id) != students.end();
 }
 bool System::courseExists(string code) {
+
     for (auto& c : courses) {
-        if (c.second.getCourse_code() == code) {
+        if (c.second.getCourse_code() == code)
             return true;
-        }
     }
     return false;
 }
 void System::registerStudentInCourse(int id, string code) {
 
-    if (!studentExists(id) || !courseExists(code)) {
-        cout << "Invalid data!\n";
-        return;
+  bool alreadyRegistered = false;
+
+for (auto& c : registeredCourses[id]) {
+    if (c.getCourse_code() == courses[code].getCourse_code()) {
+        alreadyRegistered = true;
+        break;
     }
+}
+
+if (alreadyRegistered) {
+    cout << "You already registered this course!\n";
+    return;
+}
 
     registeredCourses[id].push_back(courses[code]);
     cout << "Registered!\n";
@@ -599,18 +612,17 @@ bool System::loginAdmin() {
 
     string user, pass;
 
-    cout << "Admin Username: ";
+    cout << "Username: ";
     cin >> user;
 
     cout << "Password: ";
     cin >> pass;
 
-    if (admin.login(user, pass)) {
-        return true;
-    }
+    Admin admin;
 
-    return false;
+    return admin.login(user, pass);
 }
+
 void System::studentMenu(int id) {
 
     while (true) {
@@ -650,6 +662,11 @@ void System::studentMenu(int id) {
         }
 
         else if (choice == 6) {
+          saveStudents();
+saveCourses();
+saveRegistrations();
+
+cout << "System saved safely. Goodbye!\n";
             break;
         }
 
@@ -714,8 +731,13 @@ void System::adminMenu() {
 
         else if (choice == 7) printAllStudents();
 
-        else if (choice == 8) break;
+        else if (choice == 8) {saveStudents();
+saveCourses();
+saveRegistrations();
 
+cout << "System saved safely. Goodbye!\n";
+break;
+}
         else cout << "Invalid choice!\n";
     }
 }
@@ -803,13 +825,14 @@ void System::run() {
         int choice;
         cin >> choice;
 
-        if (choice == 1) {
+       if (choice == 1) {
 
-            if (loginAdmin()) {
-                adminMenu();
-            }
-
-        }
+    if (loginAdmin()) {
+        adminMenu();
+    } else {
+        cout << "Wrong credentials!\n";
+    }
+}
         else if (choice == 2) {
 
             int id;

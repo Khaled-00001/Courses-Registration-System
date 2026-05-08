@@ -1,25 +1,44 @@
-#include <iostream>
-#include<fstream>
-#include "Course.h"
 #include "System.h"
+#include <iostream>
+#include <thread>
+#include <chrono>
 using namespace std;
 
+void loading() {
+    cout << "\nLoading";
+    for (int i = 0; i < 5; i++) {
+        cout << ".";
+        this_thread::sleep_for(chrono::milliseconds(300));
+    }
+    cout << "\n\n";
+}
+void welcomeScreen() {
 
+    cout << "=====================================\n";
+    cout << "     COURSE REGISTRATION SYSTEM      \n";
+    cout << "=====================================\n";
+    cout << "        Team Elf7ool        \n";
+    cout << "-------------------------------------\n";
+    cout << "   1. Start System\n";
+    cout << "   2. Exit\n";
+    cout << "=====================================\n";
+    cout << "Choose: ";
+}
 
 int main() {
+
+    welcomeScreen();
+    loading();
+    int choice;
+    cin >> choice;
+
+    if (choice == 2) {
+        cout << "Goodbye!\n";
+        return 0;
+    }
+
     System system;
-
-
-    vector<Course> co=system.getCourses();
-    Course c1;
-
-    c1.setName("3elm nafs");
-    co.push_back(c1);
-    system.setCourses(co);
-    system.printCourses();
-    /*cout<<"Hereeeeeeeee\n";
-    cout<<system.searchCourseByCode("cS304").getName()<<endl;
-    cout<<system.searchCourseByName("oop").getCourse_code()<<endl;*/
+    system.run();
 
     return 0;
 }
