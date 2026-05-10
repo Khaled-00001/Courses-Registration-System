@@ -29,22 +29,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd37489e-5de6-4b3a-81fb-1826349b7f1c" name="Changes" comment="validation and main fn">
+    <list default="true" id="fd37489e-5de6-4b3a-81fb-1826349b7f1c" name="Changes" comment="final touches">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course.h" beforeDir="false" afterPath="$PROJECT_DIR$/Course.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/System.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/System.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/System.h" beforeDir="false" afterPath="$PROJECT_DIR$/System.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cache-v2-ef24dd00f589cee76745.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-2051f183a0acf0a9bb99.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-0a64744217a3b4bbc6dd.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2026-05-08T13-19-27-0907.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-course_regestiration-Debug-2b497e1cc44af034dd2a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-course_registration-Debug-2d5b704973681b5265e7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/rules.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/rules.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +168,7 @@
       <workItem from="1778088269222" duration="2517000" />
       <workItem from="1778246363953" duration="754000" />
       <workItem from="1778247166435" duration="5269000" />
-      <workItem from="1778430421395" duration="3732000" />
+      <workItem from="1778430421395" duration="4554000" />
     </task>
     <task id="LOCAL-00001" summary="update uppercase handle and fn search code return">
       <option name="closed" value="true" />
@@ -216,7 +202,15 @@
       <option name="project" value="LOCAL" />
       <updated>1778252429708</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="final touches">
+      <option name="closed" value="true" />
+      <created>1778434216233</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1778434216233</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,11 +221,23 @@
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update uppercase handle and fn search code return" />
     <MESSAGE value="naming" />
     <MESSAGE value="saving fns" />
     <MESSAGE value="validation and main fn" />
-    <option name="LAST_COMMIT_MESSAGE" value="validation and main fn" />
+    <MESSAGE value="final touches" />
+    <option name="LAST_COMMIT_MESSAGE" value="final touches" />
   </component>
 </project>
