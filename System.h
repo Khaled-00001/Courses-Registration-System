@@ -4,15 +4,10 @@
 #include<fstream>
 #include <vector>
 #include "Admin.h"
-
-class Student;
-class Course;
+#include "Student.h"
+#include "Course.h"
 using namespace std;
 
-struct File {
-    ifstream readFile;
-    ofstream editFile;
-};
 
 class System {
 private:

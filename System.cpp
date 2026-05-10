@@ -90,7 +90,8 @@ void System::readingRegisterFile() {
         int studentId;
         string code;
 
-        ss >> studentId >> code;
+        double grade;
+		ss >> studentId >> code >> grade;
 
         if (courses.find(code) != courses.end()) {
             registeredCourses[studentId].push_back(courses[code]);
@@ -189,7 +190,7 @@ vector<Course> System::getCourses() {
 
 void System::setCourses(vector<Course> course) {
     for (int i=0;i<course.size();i++) {
-        courses [course[i].getName()] = course[i];
+        courses[course[i].getCourse_code()] = course[i];
 
     }
 }
@@ -198,14 +199,15 @@ void System::setCourses(vector<Course> course) {
 void System::addGrade(int studentID, string courseName, double grade) {
     courseName = handleSpaceToUnderScore(toUpperCase(courseName));
     // check the existance of the course in the map
-    if (courses.find(courseName) == courses.end()) {
+    Course c = searchCourseByName(courseName);
+	if (c.getCourse_code().empty()) {
         cout << "Course is Not Exist\n";
         return;
     }
 
     bool found = false;
-    string targetCode = courses[courseName].getCourse_code();
-    // check the existance of the course in student registered courses
+	Course coursess = searchCourseByName(courseName);
+	string targetCode = coursess.getCourse_code();    // check the existance of the course in student registered courses
     for (int i = 0; i < registeredCourses[studentID].size(); i++) {
         if (courses[courseName].getCourse_code() == registeredCourses[studentID][i].getCourse_code()) {
             found = true;
@@ -232,8 +234,9 @@ void System::addGrade(int studentID, string courseName, double grade) {
 void System::editGrade(int studentID, string courseName, double newGrade) {
     bool found = false;
     courseName = handleSpaceToUnderScore(toUpperCase(courseName));
-    string targetCode = courses[toUpperCase(courseName)].getCourse_code();
-    for (int i = 0; i < grades[studentID].size(); i++){
+Course coursess = searchCourseByName(courseName);
+	string targetCode = coursess.getCourse_code();
+        for (int i = 0; i < grades[studentID].size(); i++){
         if (targetCode == grades[studentID][i].first.getCourse_code()) {
             grades[studentID][i].second = newGrade;
             found = true;
@@ -348,7 +351,8 @@ void System::showSpecificCourse() {
     }else if (input == "2") {
         string name;
         cout << "Enter Course Name: ";
-        cin >> name;
+       cin.ignore(numeric_limits<streamsize>::max(), '\n');
+       getline(cin, name);
         // to be sure that the name is similar to courseName written in the file
         name = handleSpaceToUnderScore(toUpperCase(name));
         bool found = false;
@@ -396,7 +400,7 @@ void System::courseRegisteration() {
     cout << "Enter course you want to register: ";
     cin >> courseName;
     courseName = handleSpaceToUnderScore(toUpperCase(courseName));
-    bool found;
+    bool found = 0 ;
     for (auto& c: courses) {
         if (c.second.getName() == courseName) {
             found = true;
@@ -404,7 +408,7 @@ void System::courseRegisteration() {
         }
     }
     if (found) {
-        registeredCourses[studentID].push_back(courses[courseName]);
+        registeredCourses[studentID].push_back(searchCourseByName(courseName));
         cout << "Congrats :)\nCourse have been Registered Successfully!\n";
     }
 
@@ -435,7 +439,8 @@ cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
 
     cout << "Enter description: ";
-    cin >> desc;
+     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+       getline(cin, desc);
 
     cout << "Enter credit hours: ";
     cin >> ch;
@@ -637,7 +642,12 @@ void System::studentMenu(int id) {
 
         int choice;
         cin >> choice;
-
+		if (cin.fail()) {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Invalid input!\n";
+    continue;
+}
         if (choice == 1) {
             printCourses();
         }
@@ -646,7 +656,9 @@ void System::studentMenu(int id) {
             string name;
             cout << "Enter course name/code: ";
             cin >> name;
-            cout << searchCourseByName(name).getName() << endl;
+            Course c = searchCourseByCode(name);
+				if (c.getCourse_code().empty())
+   					 c = searchCourseByName(name);
         }
 
         else if (choice == 3) {
@@ -676,7 +688,7 @@ cout << "System saved safely. Goodbye!\n";
     }
 }
 void System::adminMenu() {
-
+ int choice;
     while (true) {
 
         cout << "\n===== Admin Menu =====\n";
@@ -689,9 +701,14 @@ void System::adminMenu() {
         cout << "7. View Students\n";
         cout << "8. Logout\n";
 
-        int choice;
-        cin >> choice;
 
+        cin >> choice;
+		if (cin.fail()) {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Invalid input!\n";
+    continue;
+}
         if (choice == 1) addCourse();
 
         else if (choice == 2) {
@@ -824,7 +841,12 @@ void System::run() {
 
         int choice;
         cin >> choice;
-
+		if (cin.fail()) {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Invalid input!\n";
+    continue;
+}
        if (choice == 1) {
 
     if (loginAdmin()) {
