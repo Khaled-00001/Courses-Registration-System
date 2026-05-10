@@ -1,0 +1,15 @@
+# ninja log v6
+18	865	8001342440426407	CMakeFiles/course_regestiration.dir/Student.cpp.obj	d1f8003914947c0d
+10	788	7999555695617410	CMakeFiles/course_registration.dir/Course.cpp.obj	c22f20262374267
+7	1233	8001342440310657	CMakeFiles/course_regestiration.dir/main.cpp.obj	cb2b2ffd787fc101
+12	918	8001342440372336	CMakeFiles/course_regestiration.dir/Course.cpp.obj	20a4e26a0bd0ec9a
+2	681	8001343734983578	build.ninja	68c59d7b88499f6e
+2	295	8001343734983578	build.ninja	68c59d7b88499f6e
+26	814	8001343735688194	CMakeFiles/course_regestiration.dir/Admin.cpp.obj	1315bc7063ee034d
+19	944	8001343735628019	CMakeFiles/course_regestiration.dir/Student.cpp.obj	cc3012f050550574
+12	1058	8001343735562921	CMakeFiles/course_regestiration.dir/Course.cpp.obj	608bc312ebf04719
+7	1343	8001343735507705	CMakeFiles/course_regestiration.dir/main.cpp.obj	e6e42b2b5a34000b
+32	2279	8001343735758303	CMakeFiles/course_regestiration.dir/System.cpp.obj	7e7740a411ebeef8
+2279	2529	8001343758232976	course_regestiration.exe	53cfed5a46572952
+9	3649	8001358996761996	CMakeFiles/course_regestiration.dir/System.cpp.obj	7e7740a411ebeef8
+3649	4330	8001359033157399	course_regestiration.exe	53cfed5a46572952

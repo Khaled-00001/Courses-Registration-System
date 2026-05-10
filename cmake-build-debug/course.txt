@@ -1,0 +1,4 @@
+CS101 Programming_Basics Intro_to_programming ELDod 3
+CS103 Algorithms Problem_solving Doha 4
+CS102 C_DS Database Zico 1
+CS104 Linear_Algebra Mathematics Dyooa 2
