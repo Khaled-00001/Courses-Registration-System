@@ -1,14 +1,12 @@
-cmake_minimum_required(VERSION 3.20)
-project(MyProject)
+cmake_minimum_required(VERSION 3.30)
+project(course_regestiration)
 
 set(CMAKE_CXX_STANDARD 17)
 
-
-add_executable(course_registration main.cpp Course.cpp)
-
-add_executable(course_regestiration main.cpp
+add_executable(course_regestiration
+        main.cpp
         Course.cpp
-        Course.h
         Student.cpp
-        Student.h)
-
+        Admin.cpp
+        System.cpp
+)

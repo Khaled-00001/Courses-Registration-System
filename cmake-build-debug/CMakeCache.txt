@@ -157,7 +157,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=MyProject
+CMAKE_PROJECT_NAME:STATIC=course_regestiration
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=C:/msys64/mingw64/bin/ranlib.exe
@@ -250,6 +250,15 @@ MyProject_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 MyProject_SOURCE_DIR:STATIC=D:/set/clion set/Courses-Registration-System
+
+//Value Computed by CMake
+course_regestiration_BINARY_DIR:STATIC=D:/set/clion set/Courses-Registration-System/cmake-build-debug
+
+//Value Computed by CMake
+course_regestiration_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+course_regestiration_SOURCE_DIR:STATIC=D:/set/clion set/Courses-Registration-System
 
 
 ########################

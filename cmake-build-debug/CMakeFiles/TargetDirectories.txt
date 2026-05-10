@@ -1,4 +1,3 @@
-D:/set/clion set/Courses-Registration-System/cmake-build-debug/CMakeFiles/course_registration.dir
 D:/set/clion set/Courses-Registration-System/cmake-build-debug/CMakeFiles/course_regestiration.dir
 D:/set/clion set/Courses-Registration-System/cmake-build-debug/CMakeFiles/edit_cache.dir
 D:/set/clion set/Courses-Registration-System/cmake-build-debug/CMakeFiles/rebuild_cache.dir
